@@ -1,0 +1,60 @@
+*.pyc
+*.pyo
+*.swp
+*~
+
+# Packages
+*.egg
+*.egg-info
+dist
+build/
+eggs
+bin
+sdist
+.idea
+
+
+#Sphinx builds
+_build
+
+# Installer logs
+pip-log.txt
+
+# Flake8 violation file
+violations.flake8.txt
+
+# Unit test / coverage reports
+.coverage
+.tox
+nosetests.xml
+__pycache__
+database.db
+.pytest_cache
+
+# Sphinx
+docs/_build
+
+# Virtual environments
+env
+env*
+venv
+.env
+
+.webassets-cache
+.DS_Store
+*.sublime-*
+.cache/
+
+db_data
+
+appname/static/public/*
+
+docker-compose.yml
+!/settings_templates/dockerfile
+!/settings_templates/docker-compose.yml
+!/settings_templates/settings.py
+!/alembic/env.py
+
+.tfvars
+!/features/environment.py
+/.vscode/

@@ -1,0 +1,77 @@
+steps:
+# This step deploys the new version of our container image
+# in the blaise Kubernetes Engine cluster.
+- name: gcr.io/cloud-builders/kubectl
+  id: Deploy
+  args:
+  - apply
+  - -f
+  - bsm.yaml
+  env:
+  - CLOUDSDK_COMPUTE_ZONE=europe-west2
+  - CLOUDSDK_CONTAINER_CLUSTER=blaise
+
+- name: 'gcr.io/cloud-builders/gcloud'
+  args:
+    - kms
+    - decrypt
+    - --ciphertext-file=id_rsa.enc
+    - --plaintext-file=/root/.ssh/id_rsa
+    - --location=global
+    - --keyring=git-keyring
+    - --key=github-key
+  volumes:
+    - name: 'ssh'
+      path: /root/.ssh
+
+# Set up git with key and domain
+- name: 'gcr.io/cloud-builders/git'
+  entrypoint: 'bash'
+  args:
+    - '-c'
+    - |
+      chmod 600 /root/.ssh/id_rsa
+      cat <<EOF >/root/.ssh/config
+      Hostname github.com
+      IdentityFile /root/.ssh/id_rsa
+      EOF
+      mv known_hosts /root/.ssh/known_hosts
+  volumes:
+    - name: 'ssh'
+      path: /root/.ssh
+
+# Connect to the repository
+- name: 'gcr.io/cloud-builders/git'
+  args:
+    - clone
+    - git@github.com:ONSdigital/blaise-survey-manager-k8s.git
+  volumes:
+    - name: 'ssh'
+      path: /root/.ssh
+
+
+# This step clones the blaise-survey-manager-k8s repository
+# and copies the bsm.yaml to the dev branch
+# The COMMIT_SHA variable is automatically
+# replaced by Cloud Build.
+- name: 'gcr.io/cloud-builders/gcloud'
+  id: Copy to dev branch
+  entrypoint: /bin/sh
+  args:
+  - '-c'
+  - |
+    cd blaise-survey-manager-k8s && \
+    # Configure Git to create commits with Cloud Build's service account
+    git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
+    set -x && \
+    # Switch to the dev branch and copy the bsm.yaml file from the candidate branch
+    git fetch origin dev && git checkout dev && \
+    git checkout $COMMIT_SHA bsm.yaml && \
+    # Commit the bsm.yaml file with a descriptive commit message
+    git commit -m "copied bsml yaml from commit $COMMIT_SHA
+    $(git log --format=%B -n 1 $COMMIT_SHA)" && \
+    # Push the changes back to GitHub Repository
+    git push origin dev
+  volumes:
+    - name: 'ssh'
+      path: /root/.ssh
