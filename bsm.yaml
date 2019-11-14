@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bsm
-        image: "eu.gcr.io/blaisepoc/blaise-survey-manager-k8s:0e1da54"
+        image: "eu.gcr.io/blaisepoc/blaise-case-processor-k8s:0e1da54"
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

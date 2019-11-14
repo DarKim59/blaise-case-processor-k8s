@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
       - name: bsm
-        image: "eu.gcr.io/GOOGLE_CLOUD_PROJECT/blaise-survey-manager-k8s:COMMIT_SHA"
+        image: "eu.gcr.io/GOOGLE_CLOUD_PROJECT/blaise-case-processor-k8s:COMMIT_SHA"
         imagePullPolicy: Always
         ports:
         - containerPort: 5000

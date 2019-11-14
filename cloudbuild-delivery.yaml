@@ -44,13 +44,13 @@ steps:
 - name: 'gcr.io/cloud-builders/git'
   args:
     - clone
-    - git@github.com:ONSdigital/blaise-survey-manager-k8s.git
+    - git@github.com:ONSdigital/blaise-case-processor-k8s.git
   volumes:
     - name: 'ssh'
       path: /root/.ssh
 
 
-# This step clones the blaise-survey-manager-k8s repository
+# This step clones the blaise-case-processor-k8s repository
 # and copies the bsm.yaml to the dev branch
 # The COMMIT_SHA variable is automatically
 # replaced by Cloud Build.
@@ -60,7 +60,7 @@ steps:
   args:
   - '-c'
   - |
-    cd blaise-survey-manager-k8s && \
+    cd blaise-case-processor-k8s && \
     # Configure Git to create commits with Cloud Build's service account
     git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
     set -x && \
