@@ -1,21 +1,21 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: bsm
+  name: bcp
   labels:
-    app: bsm
+    app: bcp
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: bsm
+      app: bcp
   template:
     metadata:
       labels:
-        app: bsm
+        app: bcp
     spec:
       containers:
-      - name: bsm
+      - name: bcp
         image: "eu.gcr.io/GOOGLE_CLOUD_PROJECT/blaise-case-processor-k8s:COMMIT_SHA"
         imagePullPolicy: Always
         ports:
@@ -41,7 +41,7 @@ spec:
           - name: SECRET_KEY
             value: a_secret
           - name: RABBITMQ_EXCHANGE
-            value: BSM_exchange
+            value: bcp_exchange
           - name: RABBITMQ_USER
             valueFrom:
               secretKeyRef:
@@ -60,11 +60,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: bsm
+  name: bcp
 spec:
   type: NodePort
   selector:
-    app: bsm
+    app: bcp
   ports:
     - protocol: TCP
       port: 80
@@ -75,10 +75,10 @@ kind: Ingress
 metadata:
   annotations:
     kubernetes.io/ingress.allow-http: "false"
-    kubernetes.io/ingress.global-static-ip-name: bsm
-    ingress.gcp.kubernetes.io/pre-shared-cert: bsm
-  name: bsm
+    kubernetes.io/ingress.global-static-ip-name: bcp
+    ingress.gcp.kubernetes.io/pre-shared-cert: bcp
+  name: bcp
 spec:
     backend:
-      serviceName: bsm
+      serviceName: bcp
       servicePort: 80
