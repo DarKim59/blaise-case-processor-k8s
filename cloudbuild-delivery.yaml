@@ -6,7 +6,7 @@ steps:
   args:
   - apply
   - -f
-  - bsm.yaml
+  - bcp.yaml
   env:
   - CLOUDSDK_COMPUTE_ZONE=europe-west2
   - CLOUDSDK_CONTAINER_CLUSTER=blaise
@@ -51,7 +51,7 @@ steps:
 
 
 # This step clones the blaise-case-processor-k8s repository
-# and copies the bsm.yaml to the dev branch
+# and copies the bcp.yaml to the dev branch
 # The COMMIT_SHA variable is automatically
 # replaced by Cloud Build.
 - name: 'gcr.io/cloud-builders/gcloud'
@@ -64,11 +64,11 @@ steps:
     # Configure Git to create commits with Cloud Build's service account
     git config user.email $(gcloud auth list --filter=status:ACTIVE --format='value(account)') && \
     set -x && \
-    # Switch to the dev branch and copy the bsm.yaml file from the candidate branch
+    # Switch to the dev branch and copy the bcp.yaml file from the candidate branch
     git fetch origin dev && git checkout dev && \
-    git checkout $COMMIT_SHA bsm.yaml && \
-    # Commit the bsm.yaml file with a descriptive commit message
-    git commit -m "copied bsml yaml from commit $COMMIT_SHA
+    git checkout $COMMIT_SHA bcp.yaml && \
+    # Commit the bcp.yaml file with a descriptive commit message
+    git commit -m "copied bcp yaml from commit $COMMIT_SHA
     $(git log --format=%B -n 1 $COMMIT_SHA)" && \
     # Push the changes back to GitHub Repository
     git push origin dev

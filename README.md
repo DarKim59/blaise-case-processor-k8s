@@ -14,9 +14,9 @@ When a change is pushed to the blaise_survey_manager repository the following ha
     
 The coresponsding container image is built (for blaise_survey_manager repo) and this is pushed to Container Registry.
 
-Once the image is pushed, the Kubernetes deployment manifest (bsm.yaml) is updated to use that new image and this is pushed to the candidate branch of the k8s repository. 
+Once the image is pushed, the Kubernetes deployment manifest (bcp.yaml) is updated to use that new image and this is pushed to the candidate branch of the k8s repository.
 
-This triggers the actual deployment in Kubernetes of the k8s repository. A Deployment occurs (using bsm.yaml) and the three SSH steps are carried out (as described above)
+This triggers the actual deployment in Kubernetes of the k8s repository. A Deployment occurs (using bcp.yaml) and the three SSH steps are carried out (as described above)
 
 Once the deployment is finished, the new manifest is copied over to the dev branch of the k8s repository.
 

@@ -41,7 +41,7 @@ spec:
           - name: SECRET_KEY
             value: a_secret
           - name: RABBITMQ_EXCHANGE
-            value: bcp_exchange
+            value: bsm_exchange
           - name: RABBITMQ_USER
             valueFrom:
               secretKeyRef:
